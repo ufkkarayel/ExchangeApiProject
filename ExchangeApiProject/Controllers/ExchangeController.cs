@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ExchangeApiProject.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
+
 
 namespace ExchangeApiProject.Controllers
 {
@@ -66,6 +69,26 @@ namespace ExchangeApiProject.Controllers
                 //ViewBag.Rate3=(1/decimal.Parse(body3))*100;
             }
             #endregion
+            #region
+            
+            var client4 = new HttpClient();
+            var request4 = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://currency-exchange.p.rapidapi.com/exchange?from=USD&to=EUR&q=1.0"),
+                Headers =
+    {
+        { "X-RapidAPI-Key", "ed120ca162msh4a2cf1663625a24p1cae18jsn548260e0d857" },
+        { "X-RapidAPI-Host", "currency-exchange.p.rapidapi.com" },
+    },
+            };
+            using (var response4 = await client4.SendAsync(request4))
+            {
+                response4.EnsureSuccessStatusCode();
+                var body4 = await response4.Content.ReadAsStringAsync();
+                ViewBag.USDTOEUR=body4;
+            }
+            #endregion         
             return View();
         }
     }
